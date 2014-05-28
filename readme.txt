@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: text, php, plugin, widget, sidebar, conditions
 Requires at least: 2.8
 Tested up to: 3.9
-Stable tag: 2.0.5
+Stable tag: 2.0.6
 
 Text widget with raw PHP support and conditional visibility settings. Flexible conditional options with ability to edit and add custom conditions.
 
@@ -50,6 +50,10 @@ The plugins settings are located under Settings => ATW Plugin. From there you ca
 
 
 == Changelog ==
+
+= 2.0.6 =
+- Added support for [embed] shortcodes.
+- Updated deprecated functions usage and removed php notices.
 
 = 2.0.5 =
 - WP 3.9 compatibility update.

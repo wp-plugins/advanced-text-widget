@@ -4,7 +4,7 @@ Plugin Name: Advanced Text Widget
 Plugin URI: http://simplerealtytheme.com/plugins/atw-pro/
 Description: Text widget that has extensive conditional options to display content on pages, posts, specific categories etc. It supports regular HTML as well as PHP code.
 Author: Max Chirkov
-Version: 2.0.5
+Version: 2.0.6
 Author URI: http://simplerealtytheme.com
 */
           
@@ -75,6 +75,9 @@ class advanced_text extends WP_Widget {
 		$title = ( isset($instance['title']) ) ? esc_attr( $instance['title'] ) : false;
 		$title = apply_filters( 'atw_widget_title', $title );
 		$text = ( isset($instance['text']) ) ? $instance['text'] : false;
+
+        $wpEmbed = new WP_Embed();
+        $text = $wpEmbed->run_shortcode($text);
 		$text = apply_filters( 'atw_widget_content', $text, $instance );
 
 		echo $before_widget;
@@ -91,13 +94,14 @@ class advanced_text extends WP_Widget {
 function advanced_text_do_shortcode(){
 	if (!is_admin()){
 		add_filter('widget_text', 'do_shortcode', 12);
+        add_filter('atw_widget_content', 'shortcode_unautop');
 		add_filter('atw_widget_content', 'do_shortcode', 12);
 	}
 }
 
 // Tell Dynamic Sidebar about our new widget and its control
 add_action('widgets_init', create_function('', 'return register_widget("advanced_text");'));
-add_action('widgets_init', 'advanced_text_do_shortcode');
+add_action('init', 'advanced_text_do_shortcode');
 
 function atw_admin_scripts(){
 	$page = (isset($_GET['page'])) ? esc_attr($_GET['page']) : false;

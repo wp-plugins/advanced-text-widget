@@ -66,7 +66,7 @@ class atw_Admin extends Plugin_Admin_Class_0_2 {
 
     function localize(){
         $this->set_longname(__('Advanced Text Widget Options', $this->hook));
-        $this->set_shortname(__('ATW Plugin', $this->hooks));
+        $this->set_shortname(__('ATW Plugin', $this->hook));
         //$this->set_var( 'longname', __('Advanced Text Widget Options', $this->hook) );       
     }
     
