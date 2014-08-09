@@ -216,6 +216,4 @@ class atw_Admin extends Plugin_Admin_Class_0_2 {
         
         return $contextual_help;
     }     
-}   
-$atw = new atw_Admin();
-$atw->auto_update();
+}

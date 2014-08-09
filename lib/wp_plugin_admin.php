@@ -37,8 +37,7 @@ if(!class_exists('Plugin_Admin_Class_0_2')){
         );
 
         function __construct() {
-
-            register_activation_hook( __FILE__, array($this, 'plugin_activate'));
+//            register_activation_hook( __FILE__, array($this, 'plugin_activate'));
             add_action('admin_init', array(&$this,'options_init'));
             if(!empty($this->submenu_pages)){
                 add_action('admin_menu', array(&$this, 'register_menu'));
@@ -160,46 +159,49 @@ if(!class_exists('Plugin_Admin_Class_0_2')){
          * Config Page Scripts
          */
         function config_page_styles() {
-            $page = isset($_GET['page']) ? esc_attr($_GET['page']) : false;
-
-            if ($page && ($page == $this->filename || $page == $this->hook)) {
-                wp_enqueue_style('dashboard');
-                wp_enqueue_style('thickbox');
-                wp_enqueue_style('global');
-                wp_enqueue_style('wp-admin');
-                wp_enqueue_style('blogicons-admin-css', WP_CONTENT_URL . '/plugins/' . plugin_basename(dirname(__FILE__)). '/wp_plugin_admin.css');
+            if ($page = @$_GET['page'])
+            {
+                if ($page && ($page == $this->filename || $page == $this->hook)) {
+                    wp_enqueue_style('dashboard');
+                    wp_enqueue_style('thickbox');
+                    wp_enqueue_style('global');
+                    wp_enqueue_style('wp-admin');
+                    wp_enqueue_style('blogicons-admin-css', WP_CONTENT_URL . '/plugins/' . plugin_basename(dirname(__FILE__)). '/wp_plugin_admin.css');
+                }
             }
         }
 
         function config_page_scripts() {
-            $page = isset($_GET['page']) ? esc_attr($_GET['page']) : false;
-
-            if ($page && ($page == $this->filename || $page == $this->hook)) {
-                wp_enqueue_script('jquery');
-                wp_enqueue_script('jquery-ui');
-                wp_enqueue_script('jquery-ui-core');
-                wp_enqueue_script('jquery-ui-tabs');
-                wp_enqueue_script('jquery-ui-sortable');
-                wp_enqueue_script('postbox');
-                wp_enqueue_script('dashboard');
-                wp_enqueue_script('thickbox');
-                wp_enqueue_script('media-upload');
+            if ($page = @$_GET['page'])
+            {
+                if ($page && ($page == $this->filename || $page == $this->hook)) {
+                    wp_enqueue_script('jquery');
+                    wp_enqueue_script('jquery-ui');
+                    wp_enqueue_script('jquery-ui-core');
+                    wp_enqueue_script('jquery-ui-tabs');
+                    wp_enqueue_script('jquery-ui-sortable');
+                    wp_enqueue_script('postbox');
+                    wp_enqueue_script('dashboard');
+                    wp_enqueue_script('thickbox');
+                    wp_enqueue_script('media-upload');
+                }
             }
         }
 
         function admin_head(){
             //this condition is important, otherwise, if loads on other pages - breaks collapsible sidebar navigation.
-            $page = isset($_GET['page']) ? esc_attr($_GET['page']) : false;
-
-            if ($page && ($page == $this->filename || $page == $this->hook)) {
-                echo '<script type="text/javascript" src="../wp-includes/js/jquery/ui.sortable.js"></script>';
-                echo '<link type="text/css" href="http://jquery-ui.googlecode.com/svn/tags/latest/themes/base/jquery.ui.all.css" rel="stylesheet" />';
-                echo '
+            if ($page = @$_GET['page'])
+            {
+                if ($page && ($page == $this->filename || $page == $this->hook)) {
+                    echo '<script type="text/javascript" src="../wp-includes/js/jquery/ui.sortable.js"></script>';
+                    echo '<link type="text/css" href="http://jquery-ui.googlecode.com/svn/tags/latest/themes/base/jquery.ui.all.css" rel="stylesheet" />';
+                    echo '
                             <script type="text/javascript">
                             jQuery(document).ready(function(){
                                 jQuery("#' . $this->hook . '_tabs").tabs();
                             });
                             </script>';
+                }
             }
         }
 
