@@ -57,12 +57,23 @@ class atw_Admin extends Plugin_Admin_Class_0_2 {
                 'name'  => 'Search Results Page',
                 'code'  => 'is_search()',
                 ),
-            ),
             array(
                 'name'  => 'Child of Page ID',
                 'code'  => '(int)$arg == $post->post_parent',
                 ),
-        );    
+            )
+        );
+
+
+    function __construct()
+    {
+        if (isset($_POST['reset-atw-settings']) && $_POST['reset-atw-settings'] == 1)
+        {
+            update_option($this->optionname, $this->default_options);
+        }
+
+        parent::__construct();
+    }
 
     function localize(){
         $this->set_longname(__('Advanced Text Widget Options', $this->hook));
@@ -124,13 +135,19 @@ class atw_Admin extends Plugin_Admin_Class_0_2 {
                     'type'      => 'text',
                     'attr'      => array('size' => 60),                
                 ),                 
-                $add_button          
+                $add_button
             );
 
-       if($options = $this->options){        
-           if($options['condition'][0]){
-               $conditions = array();             
-               foreach($options['condition'] as $k => $item){
+       $options = $this->options;
+
+       if(!empty($options))
+       {
+           if(isset($options['condition'][0]))
+           {
+               $conditions = array();
+
+               foreach($options['condition'] as $k => $item)
+               {
                     $n = $k + 1;
                    $conditions[] = array(
                         'label'     => sprintf(__('Name %d', $this->hook), $n),                    
@@ -147,6 +164,7 @@ class atw_Admin extends Plugin_Admin_Class_0_2 {
                         'default'   => $item['code'],                        
                     );
                }
+
                $conditions[] = $add_button;
            }
            
@@ -155,7 +173,7 @@ class atw_Admin extends Plugin_Admin_Class_0_2 {
         $settings = array(
             'Widget Visibility Conditions'       => $conditions,            
         );
-        
+
         $settings = apply_filters('atw_settings_array', $settings);
 
         if($key){
@@ -170,6 +188,7 @@ class atw_Admin extends Plugin_Admin_Class_0_2 {
         return $settings_array;
     }
 
+
     function validate_input($input){        
         foreach($input['condition'] as $k => $v){
             
@@ -178,7 +197,8 @@ class atw_Admin extends Plugin_Admin_Class_0_2 {
             
         }
         return $input;
-    }   
+    }
+
 
     function config_page(){   
         $this->add_column(1, '69%');
@@ -187,7 +207,42 @@ class atw_Admin extends Plugin_Admin_Class_0_2 {
         //$this->add_box('Misc. Settings', $this->settings('Misc. Settings'), 1);
         //Generate Config Page
         $this->_config_page_template();
+
+        $this->resetForm();
     }
+
+
+    function resetForm()
+    {
+        ?>
+        <script>
+            jQuery(document).ready(
+                function()
+                {
+                    var submitBtn = jQuery('#atw-conf input[name="submit"]').last();
+                    var resetBtn = jQuery('<input class="button" type="button" name="reset_settings" value="Reset Settings">').css({'display' : 'inline-block', 'margin' : '0 10px 0 0'});
+
+                    submitBtn.before(resetBtn).css({'display' : 'inline-block'});
+
+                    resetBtn.click(
+                        function()
+                        {
+                            var message = 'All current settings will be deleted. Are you sure you want to reset to default settings?';
+                            if (confirm(message))
+                            {
+                                jQuery('#atw_reset_settings').submit();
+                            }
+                        }
+                    );
+                }
+            );
+        </script>
+        <form name="atw_reset_settings" id="atw_reset_settings" method="post">
+            <input type="hidden" name="reset-atw-settings" value="1">
+        </form>
+    <?php
+    }
+
 
     function plugin_donate(){        
         $content = '<div style="text-align: center">';
