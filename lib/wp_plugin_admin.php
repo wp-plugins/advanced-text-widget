@@ -193,12 +193,17 @@ if(!class_exists('Plugin_Admin_Class_0_2')){
             if ($page = @$_GET['page'])
             {
                 if ($page && ($page == $this->filename || $page == $this->hook)) {
-                    echo '<script type="text/javascript" src="../wp-includes/js/jquery/ui.sortable.js"></script>';
-                    echo '<link type="text/css" href="http://jquery-ui.googlecode.com/svn/tags/latest/themes/base/jquery.ui.all.css" rel="stylesheet" />';
+                    wp_enqueue_script('jquery-ui-sortable');
+                    wp_enqueue_style('jquery-ui', '//jquery-ui.googlecode.com/svn/tags/latest/themes/base/jquery.ui.all.css', array());
+//                    echo '<script type="text/javascript" src="../wp-includes/js/jquery/ui.sortable.js"></script>';
+//                    echo '<link type="text/css" href="http://jquery-ui.googlecode.com/svn/tags/latest/themes/base/jquery.ui.all.css" rel="stylesheet" />';
                     echo '
                             <script type="text/javascript">
                             jQuery(document).ready(function(){
-                                jQuery("#' . $this->hook . '_tabs").tabs();
+                                if (jQuery.fn.tabs)
+                                {
+                                    jQuery("#' . $this->hook . '_tabs").tabs();
+                                }
                             });
                             </script>';
                 }
@@ -692,7 +697,7 @@ if(!class_exists('Plugin_Admin_Class_0_2')){
         function config_page_template($content, $title = '-'){
             ?>
             <div id="plugin_admin_class" class="wrap">
-                <form  action="options.php" method="post" id="<?php echo $this->hook; ?>-conf">
+                <form  action="options.php" method="post" id="<?php echo $this->hook; ?>-conf" enctype="multipart/form-data">
                     <h2 class="submit"><?php echo $this->longname; ?>&nbsp;&nbsp;&nbsp;<input class="button-primary" type="submit" name="submit" value="<?php _e('Save Options', $this->hook);?>" /></h2>
                     <?php
                     settings_fields($this->optionname . '-option-group');
@@ -730,7 +735,7 @@ if(!class_exists('Plugin_Admin_Class_0_2')){
             ?>
             <div id="plugin_admin_class" class="wrap">
                 <?php if( !isset($this->tabs) ): ?>
-                <form  action="options.php" method="post" id="<?php echo $this->hook; ?>-conf">
+                <form  action="options.php" method="post" id="<?php echo $this->hook; ?>-conf" enctype="multipart/form-data">
                     <?php endif; ?>
                     <h2 class="submit"><?php echo $this->longname; ?><?php if(!isset($this->tabs)): ?>&nbsp;&nbsp;&nbsp;<input class="button-primary" type="submit" name="submit" value="<?php _e('Save Options', $this->hook);?>" /><?php endif;?></h2>
                     <?php
@@ -755,7 +760,7 @@ if(!class_exists('Plugin_Admin_Class_0_2')){
                         foreach($this->tabs as $columns){
                             echo '<div id="tab-' . $i . '">';
                             //each tab should have it's own form. Settings will merge with the existing ones on submission. See validation function.
-                            echo '<form action="options.php" method="post" id="' . $this->hook .'-conf">';
+                            echo '<form action="options.php" method="post" id="' . $this->hook .'-conf" enctype="multipart/form-data">';
                             echo '<input class="button-primary" type="submit" name="submit" value="' . __('Save Options', $this->hook) . '" />';
                             settings_fields($this->optionname . '-option-group');
                             echo $this->_template_content($columns);

@@ -4,7 +4,7 @@ Plugin Name: Advanced Text Widget
 Plugin URI: http://simplerealtytheme.com/plugins/atw-pro/
 Description: Text widget that has extensive conditional options to display content on pages, posts, specific categories etc. It supports regular HTML as well as PHP code.
 Author: Max Chirkov
-Version: 2.0.8
+Version: 2.0.9
 Author URI: http://simplerealtytheme.com
 */
 
