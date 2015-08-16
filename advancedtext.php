@@ -4,7 +4,7 @@ Plugin Name: Advanced Text Widget
 Plugin URI: http://simplerealtytheme.com/plugins/atw-pro/
 Description: Text widget that has extensive conditional options to display content on pages, posts, specific categories etc. It supports regular HTML as well as PHP code.
 Author: Max Chirkov
-Version: 2.0.9
+Version: 2.0.10
 Author URI: http://simplerealtytheme.com
 */
 
@@ -39,7 +39,7 @@ else
 
     class advanced_text extends WP_Widget {
 
-        function advanced_text() {
+        function __construct() {
             global $atw;
             /* Widget settings. */
             $widget_ops = array( 'classname' => 'advanced_text', 'description' => __("Advanced text widget with PHP code support.", $atw->hook) );
@@ -48,7 +48,7 @@ else
             $control_ops = array( 'width' => 400, 'height' => 450, 'id_base' => 'advanced_text' );
 
             /* Create the widget. */
-            $this->WP_Widget( 'advanced_text', __("Advanced Text", $atw->hook), $widget_ops, $control_ops );
+            parent::__construct('advanced_text', __("Advanced Text", $atw->hook), $widget_ops, $control_ops );
         }
 
         function form($instance) {
